@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">;
+    <title>Magic camera</title>;
+    <link rel="stylesheet" type="text/css" href="Button/style.css">
+     <script src="prefixfree.min.js"></script>
+</head>
+<body>
+    <div class="col-sm-10">
+        <div class="col-sm-4">
+            <input id="start" type="button" class="form-control" value="打开摄像头"
+                   style="float:left;width:275px;"/>
+            <br/>
+            <div id="exPara2" style="display:none">
+                <input id="picture" type="button" class="form-control" value="拍照"
+                       style="float:left;width:275px;">
+            </div>
+            <br/>
+        </div>
+        <div id="exPara" class="col-sm-4" style="display:none">
+            <input id="stop" type="button" class="form-control" value="关闭摄像头"
+                   style="float:left;width:275px;"/>
+            <br/>
+            <input id="sc" type="button" class="form-control" value="上传"
+                   style="float:left;width:275px;">
+            <br/>
+        </div>
+    </div>
+</body>
+
+<script>
+var mediaStreamTrack;
+    document.getElementById("start").addEventListener("click", function () {
+        navigator.getUserMedia = navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia;
+        if (navigator.getUserMedia) {
+            navigator.getUserMedia({audio: true, video: {width: 320, height: 320}},
+                function (stream) {
+                    mediaStreamTrack = typeof stream.stop === 'function' ? stream : stream.getTracks()[1];
+                    video.src = (window.URL || window.webkitURL).createObjectURL(stream);
+                    video.play();
+                    $("#exPara2").show();
+                },
+                function (err) {
+                    alert("发生错误无法使用摄像头");
+                }
+            );
+        } else {
+            alert("发生错误无法使用摄像头");
+        }
+    });
+    document.getElementById("picture").addEventListener("click", function () {
+        var context = document.getElementById("canvas").getContext("2d");
+        context.drawImage(video, 0, 0, 320, 320);
+        $("#exPara").show();
+    });
+    document.getElementById("stop").addEventListener("click", function () {
+        mediaStreamTrack && mediaStreamTrack.stop();
+    });
+
+
+</script>
+
+</html>

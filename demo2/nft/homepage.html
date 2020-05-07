@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">;
+    <title>Magic camera</title>;
+    <link rel="stylesheet" type="text/css" href="FYP/Button/style.css">
+</head>
+<body>
+  <div>
+    <p><img src="FYP/Images/screen.jpg" 
+      alt="You can use this camera to find cute piggie!Don't wait!Let's take a try!">
+    </p>
+  </div>
+ <button id="button1">Start</button>
+ <button id="button2">How to run</button>
+</body>
+<script>
+ 
+var btn = document.querySelector('#button1');
+function sTart() {
+  window.location.href='nft_duck.html'
+}   
+btn.addEventListener('click', sTart);
+
+var btn = document.querySelector('#button2');
+function rUn() {
+  window.location.href='how_to_run.html'
+}   
+btn.addEventListener('click', rUn);
+
+</script>
+
+</html>
