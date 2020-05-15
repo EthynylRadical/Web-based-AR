@@ -1,3 +1,3 @@
 # Web-based-AR
-This is for my undergraduate thesis.
-In other words. it's just for fun.
+This is for my undergraduate thesis in NUSRI
+Demos are Auxilary AR and Natural AR demos
