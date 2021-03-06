@@ -5,38 +5,53 @@ let pattern;
 let cvs = document.getElementById('canvas');
 let ctx = cvs.getContext('2d');
 
-
-
-
-loadImageAsync($('.img')).then(img => {
-  let grayImg = trainer.getGrayScaleMat(img);
-  pattern = trainer.trainPattern(grayImg);
-  return getWebRTCVideoAsync();
-}).then(function (video) {
-  cvs.width = video.videoWidth;
-  cvs.height = video.videoHeight;
-  cvs.style.width = document.documentElement.clientWidth + 'px';
-  cvs.style.height = document.documentElement.clientHeight + 'px';
-  document.body.appendChild(cvs);
-  let mVideo = $('.video');
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  function loop() {
-    drawVideo(video, mVideo);
-    requestAnimationFrame(loop)
+loadImageAsync($('.img'))
+.then(
+  img => {
+    let grayImg = trainer.getGrayScaleMat(img);
+    pattern = trainer.trainPattern(grayImg);    
+    return getWebRTCVideoAsync();
   }
+)
+.then(
+  function (video) {
+    cvs.width = video.videoWidth;
+    cvs.height = video.videoHeight;
+    cvs.style.width = document.documentElement.clientWidth + 'px';
+    cvs.style.height = document.documentElement.clientHeight + 'px';
+    document.body.appendChild(cvs);
+    let mVideo = $('.video');
+    
+    function loop() {
+      drawVideo(video, mVideo);
+      requestAnimationFrame(loop)
+    }
 
-  loop();
-  mVideo.play();
-});
+    loop();
+    mVideo.play();
+  }
+);
+/*
+getWebRTCVideoAsync()
+.then(
+  function (video) {
+    cvs.width = video.videoWidth;
+    cvs.height = video.videoHeight;
+    cvs.style.width = document.documentElement.clientWidth + 'px';
+    cvs.style.height = document.documentElement.clientHeight + 'px';
+    document.body.appendChild(cvs);
+    let mVideo = $('.video');
+    
+    function loop() {
+      drawVideo(video, mVideo);
+      requestAnimationFrame(loop)
+    }
+
+    loop();
+    mVideo.play();
+  }
+);
+*/
 
 // window.addEventListener('touchstart', function () {
 //   let video = $('.video');
@@ -47,12 +62,18 @@ function drawVideo(video, mVideo) {
   if (video.readyState === 4) {
     ctx.drawImage(video, 0, 0);
     if (pattern) {
-      let grayImage = trainer.getGrayScaleMat(ctx.getImageData(0, 0, video.videoWidth, video.videoHeight));
-      let features = trainer.describeFeatures(grayImage);
-      let matches = trainer.matchPattern(features.descriptors, pattern.descriptors);
-      const result = trainer.findTransform(matches, features.keyPoints, pattern.keyPoints);
-      let transform = result && result.goodMatch > 8 ? result.transform : lastTransform;
 
+
+      //=====================================================================================================
+      let grayImage = trainer.getGrayScaleMat(ctx.getImageData(0, 0, video.videoWidth, video.videoHeight));
+      let features = trainer.describeFeatures(grayImage); //计算特征点
+      let matches = trainer.matchPattern(features.descriptors, pattern.descriptors); //特征点匹配
+      const result = trainer.findTransform(matches, features.keyPoints, pattern.keyPoints); //计算仿射矩阵
+      //=====================================================================================================
+
+
+
+      let transform = result && result.goodMatch > 8 ? result.transform : lastTransform;
       if (transform) {
         ctx.save();
         let [ a, c, e, b, d, f ] = transform.data;

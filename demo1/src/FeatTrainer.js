@@ -61,7 +61,8 @@ class FeatTrainer {
     }
   }
 
-  getGrayScaleMat(img) {
+  getGrayScaleMat(img) 
+  {
     let width, height, imageData;
     if (img instanceof Image) {
       width = img.naturalWidth;
@@ -162,14 +163,8 @@ class FeatTrainer {
     const num_corners = this.detectKeyPoints(img_u8_smooth, screen_corners, max_per_level);
     const descriptors = new jsfeat.matrix_t(32, max_per_level, jsfeat.U8_t | jsfeat.C1_t);
 
-
-
-
     //orb特征匹配
     jsfeat.orb.describe(img_u8_smooth, screen_corners, num_corners, descriptors);
-
-
-
 
     return {
       keyPoints: screen_corners.slice(0, num_corners), descriptors
