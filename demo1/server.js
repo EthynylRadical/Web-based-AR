@@ -1,7 +1,7 @@
 var http = require('http');
 var fs = require('fs');//引入文件读取模块
 
-var documentRoot = 'C:\\Users\\Ethynyl Radical\\Desktop\\PycharmProject'
+var htmlRoot = 'D:\\Github\\Web-based-AR\\demo1\\main.html'
 
 var server= http.createServer(function(req,res){
 
@@ -9,7 +9,7 @@ var server= http.createServer(function(req,res){
     //客户端输入的url，例如如果输入localhost:8888/index.html
     //那么这里的url == /index.html 
 
-    var file = documentRoot + url;
+    var file = htmlRoot;
     console.log(url);
 
     fs.readFile( file , function(err,data){
